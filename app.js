@@ -1,56 +1,72 @@
 // app.js
 
-// Function to handle financial input form
-function handleFormSubmission() {
-    // Logic for capturing user input from form
+// State Management
+let currentStep = 0;
+const totalSteps = 8;
+const formData = {};
+
+// Function to show current step
+function showStep(step) {
+    const steps = document.getElementsByClassName('form-step');
+    Array.from(steps).forEach((s, index) => {
+        s.style.display = (index === step) ? 'block' : 'none';
+    });
 }
 
-// Function to create financial scenarios
-function createScenario(data) {
-    // Logic to create and compare scenarios
-}
-
-// Sliders for yield rate (8-15%) and annuity insurance (100,000-1,500,000 won)
-let yieldRateSlider = document.getElementById('yieldRate');
-let annuityInsuranceSlider = document.getElementById('annuityInsurance');
-
-// Simulate 5-year roadmap
-function simulateFiveYearRoadmap(initialInvestment, yieldRate, annuityInsurance) {
-    const years = 5;
-    let results = [];
-    for (let i = 1; i <= years; i++) {
-        const compoundInterest = initialInvestment * Math.pow((1 + yieldRate / 100), i);
-        results.push({
-            year: i,
-            value: compoundInterest
-        });
+// Function to next step
+function nextStep() {
+    if (currentStep < totalSteps - 1) {
+        currentStep++;
+        showStep(currentStep);
+        saveData();
     }
-    return results;
 }
 
-// Calculate tax benefits for IRP and pension savings
-function calculateTaxBenefits(investment) {
-    const irpTaxCredit = 0.12; // assume 12% tax credit for IRP
-    const pensionTaxCredit = 0.15; // assume 15% tax credit for pensions
-    let irpBenefits = investment * irpTaxCredit;
-    let pensionBenefits = investment * pensionTaxCredit;
-    return { irpBenefits, pensionBenefits };
+// Function to previous step
+function previousStep() {
+    if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+        saveData();
+    }
 }
 
-// Track ISA limits
-let isaLimit = 5000000; // example limit
-function checkISALimit(investment) {
-    return investment <= isaLimit;
+// Form data persistence
+function saveData() {
+    const stepsData = document.querySelectorAll('.form-step');
+    stepsData.forEach((step, index) => {
+        if (index === currentStep) {
+            const inputs = step.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                formData[input.name] = input.value;
+            });
+        }
+    });
 }
 
-// Generate PDF proposal using jsPDF
-function generatePDF(results) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text('Investment Proposal', 20, 20);
-    // Logic to fill in the content from 'results'
-    doc.save('proposal.pdf');
+// Form Validation
+function validateStep() {
+    const inputs = document.querySelectorAll('.form-step')[currentStep].querySelectorAll('input, textarea');
+    let isValid = true;
+    inputs.forEach(input => {
+        if (!input.checkValidity()) {
+            isValid = false;
+            input.classList.add('error');
+        } else {
+            input.classList.remove('error');
+        }
+    });
+    return isValid;
 }
 
-// Form submission listener
-document.getElementById('financialForm').addEventListener('submit', handleFormSubmission);
+// Event listeners for next and prev buttons
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (validateStep()) {
+        nextStep();
+    }
+});
+
+document.getElementById('prevBtn').addEventListener('click', previousStep);
+
+// Initiate form
+showStep(currentStep);
