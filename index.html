@@ -1,52 +1,36 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investment Advisor</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>투자 자문 애플리케이션</h1>
-        <section id="financial-input">
-            <!-- Current financial situation input -->
-            <h2>재정 상황 입력하기</h2>
-            <form>
-                <label for="monthly-income">월 수입:</label>
-                <input type="number" id="monthly-income">
-                <label for="bonus">보너스:</label>
-                <input type="number" id="bonus">
-                <label for="expenses">비용:</label>
-                <input type="number" id="expenses">
-                <label for="assets">현재 자산:</label>
-                <input type="number" id="assets">
-                <label for="investments">현재 투자:</label>
-                <input type="number" id="investments">
-                <button type="submit">제출</button>
-            </form>
-        </section>
-        <section id="scenarios">
-            <h2>시나리오 생성</h2>
-            <!-- Customizable scenario creation will go here -->
-        </section>
-        <section id="portfolio-allocation">
-            <h2>포트폴리오 할당</h2>
-            <!-- Portfolio allocation sliders for yield rate and annuity insurance -->
-        </section>
-        <section id="roadmap-simulation">
-            <h2>5년 로드맵 시뮬레이션</h2>
-            <!-- Roadmap simulation will go here -->
-        </section>
-        <section id="tax-calculation">
-            <h2>세금 혜택 계산</h2>
-            <!-- Tax benefit calculation will go here -->
-        </section>
-        <section id="pdf-proposal">
-            <h2>PDF 제안서 생성</h2>
-            <!-- PDF proposal generation functionality will go here -->
-        </section>
-    </div>
-    <script src="app.js"></script>
+    <form id="multi-step-form">
+        <div class="step">
+            <h2>Step 1: Personal Information</h2>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="step">
+            <h2>Step 2: Financial Information</h2>
+            <label for="income">Income:</label>
+            <input type="number" id="income" name="income" required>
+            <label for="expenses">Expenses:</label>
+            <input type="number" id="expenses" name="expenses" required>
+        </div>
+        <div class="step">
+            <h2>Step 3: Investment Goals</h2>
+            <label for="goals">Investment Goals:</label>
+            <textarea id="goals" name="goals" required></textarea>
+        </div>
+        <button type="button" id="prev">Previous</button>
+        <button type="button" id="next">Next</button>
+        <button type="submit">Submit</button>
+    </form>
+    <script src="script.js"></script>
 </body>
 </html>
